@@ -1,0 +1,98 @@
+﻿@model List<QulixTask.Models.Company>
+
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<h1 class="display-4 text-center">@ViewData["Title"]</h1>
+
+<input type="button" class="btn btn-primary" value="Добавить компанию" id="btnAddCompany" />
+
+@*Форма для добавления компании, открывается по нажанию кнопки "Добавить компанию" и закрывается при нажании "Отмена".
+    При добовлении происходит переадресация на эту же страницу для того чтобы отобразить добавленные данные.*@
+
+<form class="mt-5 mb-5 hide_form" action="/Company/CreateCompany" method="post" id="addCompanyForm">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Идентификатор (устанавливается автоматически)" readonly name="id" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Наименование компании" required maxlength="250" name="companyName" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Организационно-правовая форма" required maxlength="20" name="companyForm" />
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-success btn-block" value="Сохранить" />
+        </div>
+        <div class="col">
+            <input type="button" class="btn btn-danger btn-block" value="Отмена" id="btnAddCompanyCancel" />
+        </div>
+    </div>
+</form>
+
+
+@*Форма для обновления информации о компании, открывается по нажанию кнопки "Изменить" в таблице и закрывается при нажании "Отмена".
+    При обновлении происходит переадресация на эту же страницу для того чтобы отобразить обновленные данные.*@
+
+<form class="mt-5 mb-5 hide_form" action="/Company/UpdateCompany" method="post" id="updateCompanyForm">
+    <div class="form-group">
+        <input id="inpUpdateId" type="text" class="form-control" placeholder="Идентификатор (устанавливается автоматически)" readonly name="id" />
+    </div>
+    <div class="form-group">
+        <input id="inpUpdateCompanyName" type="text" class="form-control" placeholder="Наименование компании" required maxlength="250" name="companyName" />
+    </div>
+    <div class="form-group">
+        <input id="inpUpdateCompanyForm" type="text" class="form-control" placeholder="Организационно-правовая форма" required maxlength="20" name="companyForm" />
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-success btn-block" value="Сохранить изменения" />
+        </div>
+        <div class="col">
+            <input type="button" class="btn btn-danger btn-block" value="Отмена" id="btnUpdateCompanyCancel" />
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover mt-5">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Наименование
+            </th>
+            <th>
+                Организационно-правовая форма
+            </th>
+            <th>
+                #
+            </th>
+            <th>
+                #
+            </th>
+        </tr>
+    </thead>
+    @foreach (Company company in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelCompany => company.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelCompany => company.companyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelCompany => company.companyForm)
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "DeleteCompany", new { id = company.id }, htmlAttributes: new { @class = "btn btn-danger" })
+            </td>
+            <td>
+                <input class="btn btn-info btnUpdate" type="button" value="Изменить" />
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,161 @@
+﻿@model List<QulixTask.Models.Employee>
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<h1 class="display-4 text-center">@ViewData["Title"]</h1>
+
+<input type="button" class="btn btn-primary" value="Добавить работника" id="btnAddEmployee" />
+
+<form class="mt-5 mb-5 hide_form" action="/Employee/CreateEmployee" method="post" id="addEmployeeForm">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Идентификатор (устанавливается автоматически)" readonly name="id" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Имя" required maxlength="30" name="name" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Фамилия" required maxlength="30" name="surname" />
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Отчество" required maxlength="30" name="patronymic" />
+    </div>
+    <div class="form-group">
+        <input type="date" class="form-control" placeholder="Дата приема на работу" required name="employmentDate" />
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="listPosition" name="position">
+            <option label="Разработчик" value="Разработчик"/>
+            <option label="Тестировщик" value="Тестировщик"/>
+            <option label="Бизнес-аналитик" value="Бизнес-аналитик"/>
+            <option label="Менеджер" value="Менеджер"/>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="listPosition" name="company.id">
+            @foreach (Company company in ViewBag.Companies)
+            {
+                <option label="@company.companyForm '@company.companyName'" value="@company.id"/>
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-success btn-block" value="Сохранить" />
+        </div>
+        <div class="col">
+            <input type="button" class="btn btn-danger btn-block" value="Отмена" id="btnAddEmployeeCancel" />
+        </div>
+    </div>
+</form>
+
+
+
+<form class="mt-5 mb-5 hide_form" action="/Employee/UpdateEmployee" method="post" id="updateEmployeeForm">
+    <div class="form-group">
+        <input id="updateEmplId" type="text" class="form-control" placeholder="Идентификатор (устанавливается автоматически)" readonly name="id" />
+    </div>
+    <div class="form-group">
+        <input id="updateEmplName" type="text" class="form-control" placeholder="Имя" required maxlength="30" name="name" />
+    </div>
+    <div class="form-group">
+        <input id="updateEmplSurname" type="text" class="form-control" placeholder="Фамилия" required maxlength="30" name="surname" />
+    </div>
+    <div class="form-group">
+        <input id="updateEmplPatronymic" type="text" class="form-control" placeholder="Отчество" required maxlength="30" name="patronymic" />
+    </div>
+    <div class="form-group">
+        <input id="updateEmplDate" type="date" class="form-control" placeholder="Дата приема на работу" required name="employmentDate" />
+    </div>
+    <div class="form-group">
+        <select id="updateEmplPosition" class="form-control" name="position">
+            <option label="Разработчик" value="Разработчик" />
+            <option label="Тестировщик" value="Тестировщик" />
+            <option label="Бизнес-аналитик" value="Бизнес-аналитик" />
+            <option label="Менеджер" value="Менеджер" />
+        </select>
+    </div>
+    <div class="form-group">
+        <select id="updateEmplCompany" class="form-control" name="company.id">
+            @foreach (Company company in ViewBag.Companies)
+            {
+                <option label="@company.companyForm '@company.companyName'" value="@company.id" />
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-success btn-block" value="Сохранить изменения" />
+        </div>
+        <div class="col">
+            <input type="button" class="btn btn-danger btn-block" value="Отмена" id="btnUpdateEmployeeCancel" />
+        </div>
+    </div>
+</form>
+
+
+<table class="table table-hover mt-5">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Фамилия
+            </th>
+            <th>
+                Отчество
+            </th>
+            <th>
+                Дата приема на работу
+            </th>
+            <th>
+                Должность
+            </th>
+            <th>
+                Компания
+            </th>
+            <th>
+                #
+            </th>
+            <th>
+                #
+            </th>
+        </tr>
+    </thead>
+    @foreach (Employee employee in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(empl => employee.id)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.name)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.surname)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.patronymic)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.employmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.position)
+            </td>
+            <td>
+                @Html.DisplayFor(empl => employee.company.companyForm) '@Html.DisplayFor(empl => employee.company.companyName)'
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "DeleteEmployee", new { id = employee.id }, htmlAttributes: new { @class = "btn btn-danger" })
+            </td>
+            <td>
+                <input class="btn btn-info btnUpdateEmpl" type="button" value="Изменить" />
+            </td>
+        </tr>
+    }
+</table>
